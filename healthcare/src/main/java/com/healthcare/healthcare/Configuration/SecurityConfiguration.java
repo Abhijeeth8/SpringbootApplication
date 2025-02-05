@@ -1,5 +1,6 @@
 package com.healthcare.healthcare.Configuration;
 
+import com.healthcare.healthcare.SecurityFilters.JwtFilter;
 import com.healthcare.healthcare.Services.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -21,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     private AuthenticationConfiguration config;
+    private JwtFilter jwtFilter;
     private CustomUserDetailsService customUserDetailsService;
 
     @Bean
@@ -28,9 +31,10 @@ public class SecurityConfiguration {
 
         httpSecurity
                 .csrf(customizer -> customizer.disable())
-//                .authorizeHttpRequests(request -> request
-//                        .anyRequest().permitAll())
-                .httpBasic(auth -> auth.disable());
+                .authorizeHttpRequests(request -> request
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(Customizer.withDefaults());
 //                .formLogin(Customizer.withDefaults());
 
 

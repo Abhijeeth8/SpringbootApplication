@@ -6,6 +6,7 @@ import com.healthcare.healthcare.Repositories.UserRepository;
 import com.healthcare.healthcare.Services.UserService;
 import com.healthcare.healthcare.Utility.BcryptUtility;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String userLogin(@RequestBody UserT user){
+    public ResponseEntity<String> userLogin(@RequestBody UserT user){
         return userService.userLogin(user);
     }
 }
