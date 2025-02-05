@@ -38,6 +38,7 @@ public class UserService {
         Authentication authenticate = authenticationManager.authenticate(authToken);
 
         if(authenticate.isAuthenticated()){
+
             return "success";
         }
         return "Failed";
